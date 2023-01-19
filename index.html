@@ -32,17 +32,15 @@
         <button id="d6">低音6</button>
         <button id="d7">低音7</button>
         <script>
-            (() => {
-                var audio = {};
-                document.querySelectorAll("button").forEach(async el => {
-                    audio[el.id] = URL.createObjectURL(
-                        await (await fetch(`audio/${el.id}.mp3`)).blob()
-                    );
-                    el.onclick = () => {
-                        new Audio(audio[el.id]).play();
-                    };
-                });
-            })();
+            var audio = {};
+            document.querySelectorAll("button").forEach(async el => {
+                audio[el.id] = URL.createObjectURL(
+                    await (await fetch(`audio/${el.id}.mp3`)).blob()
+                );
+                el.onclick = () => {
+                    new Audio(audio[el.id]).play();
+                };
+            });
         </script>
     </body>
 </html>
