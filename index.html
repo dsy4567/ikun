@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ikun 专属乐器</title>
+    </head>
+    <body>
+        <img src="/jntm.jpg" alt="kun" />
+        <hr />
+        <button id="g1">高音1</button>
+        <button id="g2">高音2</button>
+        <button id="g3">高音3</button>
+        <button id="g4">高音4</button>
+        <button id="g5">高音5</button>
+        <button id="g6">高音6</button>
+        <button id="g7">高音7</button>
+        <hr />
+        <button id="z1">&emsp;1&emsp;</button>
+        <button id="z2">&emsp;2&emsp;</button>
+        <button id="z3">&emsp;3&emsp;</button>
+        <button id="z4">&emsp;4&emsp;</button>
+        <button id="z5">&emsp;5&emsp;</button>
+        <button id="z6">&emsp;6&emsp;</button>
+        <button id="z7">&emsp;7&emsp;</button>
+        <hr />
+        <button id="d1">低音1</button>
+        <button id="d2">低音2</button>
+        <button id="d3">低音3</button>
+        <button id="d4">低音4</button>
+        <button id="d5">低音5</button>
+        <button id="d6">低音6</button>
+        <button id="d7">低音7</button>
+        <script>
+            (() => {
+                var audio = {};
+                document.querySelectorAll("button").forEach(async el => {
+                    audio[el.id] = URL.createObjectURL(
+                        await (await fetch(`/audio/${el.id}.mp3`)).blob()
+                    );
+                    el.onclick = () => {
+                        new Audio(audio[el.id]).play();
+                    };
+                });
+            })();
+        </script>
+    </body>
+</html>
