@@ -6,7 +6,7 @@
         <title>ikun 专属乐器</title>
     </head>
     <body>
-        <img src="/jntm.jpg" alt="kun" />
+        <img src="jntm.jpg" alt="kun" />
         <hr />
         <button id="g1">高音1</button>
         <button id="g2">高音2</button>
@@ -36,7 +36,7 @@
                 var audio = {};
                 document.querySelectorAll("button").forEach(async el => {
                     audio[el.id] = URL.createObjectURL(
-                        await (await fetch(`/audio/${el.id}.mp3`)).blob()
+                        await (await fetch(`audio/${el.id}.mp3`)).blob()
                     );
                     el.onclick = () => {
                         new Audio(audio[el.id]).play();
