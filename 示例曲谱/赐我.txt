@@ -1,0 +1,52 @@
+z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 d7 d7 d6 d7 z1
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 z2 z2 z1 z2 z3
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 z1 z2 z3 z5 z3
+ z2 z3 z5 z3 z2 z3 z2 z3 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 d7 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 z2 z5 z3
+ z3 z5 z6 z6 z5 z2 z1 z2 z1 z2 z3 d6
+ d5 d6 z3 z3 d5 d6 d5 d6 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 d7 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 z2 z5 z3
+ z6 z5 z6 z6 g3 g2 g1 g2 g5 z5 z6 g1
+ d6 d6 z3 d6 d5 d6 d5 d6 z1 d6
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 d7 d7 d6 d7 z1
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 z2 z2 z1 z2 z3
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 z1 z2 z3 z5 z3
+ z2 z3 z5 z3 z2 z3 z2 z3 d6
+ z6 g3 g3 g2 g3 g5 g3
+ g1 g1 z7 g1 z6
+ z6 g3 g3 g2 g3 g5 g3
+ g1 g1 z7 g1 z7 z6
+ z6 g3 g3 g2 g3 g5 g6 g5 g3 g2 g3
+ g1 g1 g1 g1 z7 g1 z7 z6
+ z6  z5  z3  z3 z2 d7 z1 d6 z3 z2 d7 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 d7 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 z2 z5 z3
+ z3 z5 z6 z6 z5 z2 z1 z2 z1 z2 z3 d6
+ d5 d6 z3 z3 d5 d6 d5 d6 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 d7 z1 d6
+ d6 z1 z3 z3 d6 z1 z2 z1 z2 z5 z3
+ z6 z5 z6 z6 g3 g2 g1 g2 g5 z5 z6 g1
+ d6 d6 z3 d6 d5 d6 d5 d6 z1 d6
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 d7 d7 d6 d7 z1
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 z2 z2 z1 z2 z3
+ z5 d6 z1 z2 z1 d6
+ z2 z2 z2 z1 z1 z2 z3 z5 z3
+ z2 z3 z5 z3 z2 z3 z2 z3 d6
+ z3 z2 z1 z2 z3 z2 z1 z3
+ z3 z2 z1 z2 z3 z2 z5 z3
+ z6 z5 z3 z5 z6 z5 z3 z6
+ z3 z3 z1 d6 z1 z2 d6
+ z3 z2 z1 z2 z3 z2 z1 z3
+ z3 z2 z1 z2 z3 z2 z5 z3
+ z6 z5 z3 z5 z6 z5 z3 z6
+ z3 z3 z1 d6 z1 z2 d6

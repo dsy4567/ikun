@@ -31,16 +31,54 @@
         <button id="d5">低音5</button>
         <button id="d6">低音6</button>
         <button id="d7">低音7</button>
+        <hr />
+        <textarea
+            id="t"
+            cols="50"
+            rows="6"
+            placeholder="曲谱, d1=低音do, z1=do, g1=高音do, 使用空格分隔"
+        ></textarea>
+        <br />
+        <button onclick="document.querySelector('textarea#t').value+='\n'">
+            空 格
+        </button>
+        <button class="play">演奏</button>
+        <input placeholder="间隔(毫秒)" value="300" type="text" id="timeout" />
+        <label>
+            <input type="checkbox" id="c" />
+            编谱模式
+        </label>
         <script>
             var audio = {};
-            document.querySelectorAll("button").forEach(async el => {
-                audio[el.id] = URL.createObjectURL(
-                    await (await fetch(`audio/${el.id}.mp3`)).blob()
-                );
-                el.onclick = () => {
-                    new Audio(audio[el.id]).play();
-                };
-            });
+            document
+                .querySelectorAll(
+                    "button[id*='d'], button[id*='z'], button[id*='g']"
+                )
+                .forEach(async el => {
+                    audio[el.id] = URL.createObjectURL(
+                        await (await fetch(`audio/${el.id}.mp3`)).blob()
+                    );
+                    el.onmousedown = () => {
+                        new Audio(audio[el.id]).play();
+                    };
+                    el.onclick = () => {
+                        if (document.querySelector("input#c").checked) {
+                            document.querySelector("textarea#t").value +=
+                                " " + el.id;
+                        }
+                    };
+                });
+            document.querySelector(".play").onclick = () => {
+                var n = 0;
+                document
+                    .querySelector("textarea#t")
+                    .value.split(/[ \n]/)
+                    .forEach(s => {
+                        setTimeout(() => {
+                            new Audio(audio[s]).play();
+                        }, +document.querySelector("input#timeout").value * n++);
+                    });
+            };
         </script>
     </body>
 </html>
