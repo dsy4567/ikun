@@ -6,6 +6,7 @@
         <title>ikun 专属乐器</title>
     </head>
     <body>
+        <h1>ikun 专属乐器</h1>
         <img src="jntm.jpg" alt="kun" />
         <hr />
         <button id="g1">高音1</button>
@@ -23,6 +24,7 @@
         <button id="z5">&emsp;5&emsp;</button>
         <button id="z6">&emsp;6&emsp;</button>
         <button id="z7">&emsp;7&emsp;</button>
+        <button id="z0">&emsp;0&emsp;</button>
         <hr />
         <button id="d1">低音1</button>
         <button id="d2">低音2</button>
@@ -48,6 +50,15 @@
             <input type="checkbox" id="c" />
             编谱模式
         </label>
+        <br />
+        <button>没用的按钮, 疯狂按可以让浏览器两刻半也不敢放松</button>
+        <hr />
+        <div>
+            示例曲谱<br />
+            <button data-name="赐我">赐我</button>
+            <button data-name="鹿 be free">鹿 be free</button>
+            <button data-name="玛丽的小羊羔">玛丽的小羊羔</button>
+        </div>
         <script>
             var audio = {};
             document
@@ -79,6 +90,14 @@
                         }, +document.querySelector("input#timeout").value * n++);
                     });
             };
+            document.querySelectorAll("button[data-name]").forEach(el => {
+                el.onclick = () => {
+                    fetch(`示例曲谱/${el.dataset.name}.txt`).then(async res => {
+                        document.querySelector("textarea#t").value =
+                            await res.text();
+                    });
+                };
+            });
         </script>
     </body>
 </html>
