@@ -86,7 +86,7 @@
         <button id="z5">&emsp;5&emsp;</button>
         <button id="z6">&emsp;6&emsp;</button>
         <button id="z7">&emsp;7&emsp;</button>
-        <button id="z0">&emsp;0&emsp;</button>
+        <button id="z0">啊</button>
         <hr />
         <button id="d1">低音1</button>
         <button id="d2">低音2</button>
@@ -103,8 +103,11 @@
             placeholder="曲谱, d1=低音do, z1=do, g1=高音do, 使用空格分隔"
         ></textarea>
         <br />
-        <button onclick="document.querySelector('textarea#t').value+='\n'">
+        <button onclick="document.querySelector('textarea#t').value+=' '">
             空 格
+        </button>
+        <button onclick="document.querySelector('textarea#t').value+='\n'">
+            换 行
         </button>
         <button class="play">演奏</button>
         <input placeholder="间隔(毫秒)" value="300" type="text" id="timeout" />
