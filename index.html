@@ -28,17 +28,26 @@
                     animation: octocat-wave 560ms ease-in-out;
                 }
             }
-            @media (prefers-color-scheme: light) {
-                * {
-                    background-color: white;
-                    color: black;
-                }
-            }
             @media (prefers-color-scheme: dark) {
-                * {
-                    background-color: rgb(36, 36, 36);
+                body {
+                    background: black !important;
+                    scrollbar-color: dark;
+                }
+                button,
+                textarea,
+                h1,
+                input[type="text"],
+                p,
+                span {
+                    filter: invert(1);
+                }
+                label {
                     color: white;
                 }
+            }
+            body {
+                background: white;
+                color: black;
             }
             .github-corner:hover .octo-arm {
                 animation: octocat-wave 560ms ease-in-out;
