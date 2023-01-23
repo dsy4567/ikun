@@ -37,7 +37,6 @@
                 textarea,
                 h1,
                 input[type="text"],
-                p,
                 span {
                     filter: invert(1);
                 }
@@ -119,9 +118,8 @@
         <hr />
         <textarea
             id="t"
-            cols="50"
-            rows="6"
-            placeholder="曲谱, d1=低音do, z1=do, g1=高音do, 使用空格分隔"
+            style="width: 100%; height: 114.514px"
+            placeholder="曲谱, d1=低音do, z1=do, g1=高音do, 使用空格/换行分隔\n"
         ></textarea>
         <br />
         <button onclick="document.querySelector('textarea#t').value+=' '">
@@ -130,17 +128,43 @@
         <button onclick="document.querySelector('textarea#t').value+='\n'">
             换 行
         </button>
+        <button
+            onclick="document.querySelector('textarea#t').value=document.querySelector('textarea#t').value.substring(0,document.querySelector('textarea#t').value.length-3)"
+        >
+            退 格
+        </button>
         <button class="play">演奏</button>
-        <input placeholder="间隔(毫秒)" value="300" type="text" id="timeout" />
+        <input placeholder="间隔(毫秒)" value="200" type="text" id="timeout" />
         <label>
             <input style="accent-color: #66ccff" type="checkbox" id="c" />
             编谱模式
         </label>
         <br />
-        <button>没用的按钮, 疯狂按可以让浏览器两刻半也不敢放松</button>
+        <input
+            type="text"
+            id="bgm"
+            placeholder="url"
+            value="https://music.163.com/song/media/outer/url?id=114514.mp3"
+        />
+        <button
+            onclick="document.querySelector('textarea#t').value='!bgm:'+document.querySelector('#bgm').value+'\n'+document.querySelector('textarea#t').value"
+        >
+            添加背景阴乐
+        </button>
+        <br />
+        <input type="text" id="comment" />
+        <button
+            onclick="document.querySelector('textarea#t').value+=' //'+document.querySelector('#comment').value+'\n'"
+        >
+            添加注释
+        </button>
+        <br />
+        <button>
+            请疯狂点击此按钮, 以保持交互状态, 让浏览器两刻半也不敢放松
+        </button>
         <hr />
         <div>
-            示例曲谱<br />
+            <span>示例曲谱</span><br />
             <button data-name="赐我">赐我</button>
             <button data-name="鹿 be free">鹿 be free</button>
             <button data-name="玛丽的小羊羔">玛丽的小羊羔</button>
@@ -154,7 +178,7 @@
             var audio = {};
             document
                 .querySelectorAll(
-                    "button[id*='d'], button[id*='z'], button[id*='g']"
+                    "button[id^='d'], button[id^='z'], button[id^='g']"
                 )
                 .forEach(async el => {
                     audio[el.id] = URL.createObjectURL(
@@ -171,15 +195,37 @@
                     };
                 });
             document.querySelector(".play").onclick = () => {
-                var n = 0;
-                document
-                    .querySelector("textarea#t")
-                    .value.split(/[ \n]/)
-                    .forEach(s => {
+                var n = 0,
+                    bgmurl = "",
+                    p = document.querySelector("textarea#t").value;
+                if (p.startsWith("!bgm:")) {
+                    let m = p.match(/\!bgm\:.+\n/);
+                    bgmurl = m[0].replace("!bgm:", "").replace("\n", "");
+                    p = p.replace(m[0], "");
+                }
+                if (bgmurl) {
+                    let bgm = new Audio(bgmurl);
+                    bgmurl = "";
+                    bgm.oncanplay = () => {
+                        bgm.play();
                         setTimeout(() => {
-                            new Audio(audio[s]).play();
+                            p.replace(/(\n|\/\/.+\n)/g, "")
+                                .split(" ")
+                                .forEach(s => {
+                                    setTimeout(() => {
+                                        new Audio(audio[s]).play();
+                                    }, +document.querySelector("input#timeout").value * n++);
+                                });
                         }, +document.querySelector("input#timeout").value * n++);
-                    });
+                    };
+                } else
+                    p.replace(/(\n|\/\/.+\n)/g, "")
+                        .split(" ")
+                        .forEach(s => {
+                            setTimeout(() => {
+                                new Audio(audio[s]).play();
+                            }, +document.querySelector("input#timeout").value * n++);
+                        });
             };
             document.querySelectorAll("button[data-name]").forEach(el => {
                 el.onclick = () => {
