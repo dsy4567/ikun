@@ -1,0 +1,14 @@
+!bgm:https://music.163.com/song/media/outer/url?id=449818326.mp3
+                                                                                                                                                                         //等前奏
+g1    z7   z5 //看青草
+        g1     z7  z5 //穿白雪
+       g1   z7  g1     z5 //听见森林
+       g1   z7     g1 //的音乐
+       g3  g3     g1   g1 //忽然发现
+                    g3     g3   g4     g2             g1 //陌生世界
+      z6 z7 g1 //天上雾
+  z6 z7 g1
+  z5 z7 g1
+  z5 z7 g1 z6
+  g1 g1 g2 g2
+  z5 z5 z6 g4 g3
