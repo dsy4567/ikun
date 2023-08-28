@@ -28,21 +28,8 @@
                     animation: octocat-wave 560ms ease-in-out;
                 }
             }
-            @media (prefers-color-scheme: dark) {
-                body {
-                    background: black !important;
-                    scrollbar-color: dark;
-                }
-                button,
-                textarea,
-                h1,
-                input[type="text"],
-                span {
-                    filter: invert(1);
-                }
-                label {
-                    color: white;
-                }
+            html {
+                color-scheme: light dark;
             }
             body {
                 background: white;
@@ -63,8 +50,8 @@
                 height="80"
                 viewBox="0 0 250 250"
                 style="
-                    fill: #000000;
-                    color: #ffffff;
+                    fill: #333;
+                    color: #fff;
                     position: absolute;
                     top: 0;
                     border: 0;
