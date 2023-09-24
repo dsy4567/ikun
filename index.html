@@ -34,6 +34,9 @@
             .github-corner:hover .octo-arm {
                 animation: octocat-wave 560ms ease-in-out;
             }
+            button[data-note] {
+                width: 36px;
+            }
         </style>
     </head>
     <body>
@@ -45,19 +48,10 @@
                 width="80"
                 height="80"
                 viewBox="0 0 250 250"
-                style="
-                    fill: #333;
-                    color: #fff;
-                    position: absolute;
-                    top: 0;
-                    border: 0;
-                    right: 0;
-                "
+                style="fill: #333; color: #fff; position: absolute; top: 0; border: 0; right: 0"
                 aria-hidden="true"
             >
-                <path
-                    d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"
-                ></path>
+                <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
                 <path
                     d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
                     fill="currentColor"
@@ -74,147 +68,151 @@
         <h1>ikun 专属乐器</h1>
         <img src="jntm.jpg" alt="kun" />
         <hr />
-        <button id="g1">高音1</button>
-        <button id="g2">高音2</button>
-        <button id="g3">高音3</button>
-        <button id="g4">高音4</button>
-        <button id="g5">高音5</button>
-        <button id="g6">高音6</button>
-        <button id="g7">高音7</button>
-        <hr />
-        <button id="z1">&emsp;1&emsp;</button>
-        <button id="z2">&emsp;2&emsp;</button>
-        <button id="z3">&emsp;3&emsp;</button>
-        <button id="z4">&emsp;4&emsp;</button>
-        <button id="z5">&emsp;5&emsp;</button>
-        <button id="z6">&emsp;6&emsp;</button>
-        <button id="z7">&emsp;7&emsp;</button>
-        <button id="z0">啊</button>
-        <hr />
-        <button id="d1">低音1</button>
-        <button id="d2">低音2</button>
-        <button id="d3">低音3</button>
-        <button id="d4">低音4</button>
-        <button id="d5">低音5</button>
-        <button id="d6">低音6</button>
-        <button id="d7">低音7</button>
+        <button data-note="+1">+1</button>
+        <button data-note="+2">+2</button>
+        <button data-note="+3">+3</button>
+        <button data-note="+4">+4</button>
+        <button data-note="+5">+5</button>
+        <button data-note="+6">+6</button>
+        <button data-note="+7">+7</button>
+        <br /><br />
+        <button data-note="1">1</button>
+        <button data-note="2">2</button>
+        <button data-note="3">3</button>
+        <button data-note="4">4</button>
+        <button data-note="5">5</button>
+        <button data-note="6">6</button>
+        <button data-note="7">7</button>
+        <button data-note="0">啊</button>
+        <br /><br />
+        <button data-note="-1">-1</button>
+        <button data-note="-2">-2</button>
+        <button data-note="-3">-3</button>
+        <button data-note="-4">-4</button>
+        <button data-note="-5">-5</button>
+        <button data-note="-6">-6</button>
+        <button data-note="-7">-7</button>
         <hr />
         <textarea
-            id="t"
+            id="曲谱"
             style="width: 100%; height: 114.514px"
-            placeholder="曲谱, d1=低音do, z1=do, g1=高音do, 使用空格/换行分隔"
+            placeholder="曲谱, 使用空格分隔, sleep:n 可以停顿演奏 n 个音符所需时长, 换行符及多个连续空格将被忽略"
         ></textarea>
         <br />
-        <button onclick="document.querySelector('textarea#t').value+=' '">
-            空 格
+        <button id="演奏">演奏</button>
+        <br />
+        <button onclick="曲谱.value+=' '">空格</button>
+        <button onclick="曲谱.value+='\n sleep:' + sl.value">换行 + 停顿</button>
+        <button onclick="曲谱.value=曲谱.value.substring(0, 曲谱.value.lastIndexOf(' '))">
+            删除
         </button>
-        <button onclick="document.querySelector('textarea#t').value+='\n'">
-            换 行
-        </button>
-        <button
-            onclick="document.querySelector('textarea#t').value=document.querySelector('textarea#t').value.substring(0,document.querySelector('textarea#t').value.length-3)"
-        >
-            退 格
-        </button>
-        <button class="play">演奏</button>
-        <input placeholder="间隔(毫秒)" value="300" type="text" id="timeout" />
+        <button onclick="曲谱.value+=` sleep:${sl.value}`">sleep:</button>
+        <input id="sl" placeholder="n" value="1" min="0" step="0.5" type="number" />
         <label>
-            <input style="accent-color: #66ccff" type="checkbox" id="c" />
-            编谱模式
+            <input checked type="checkbox" id="编谱模式" />
+            记录音符
         </label>
         <br />
-        <input
-            type="text"
-            id="bgm"
-            placeholder="url"
-            value="https://music.163.com/song/media/outer/url?id=114514.mp3"
-        />
-        <button
-            onclick="document.querySelector('textarea#t').value='!bgm:'+document.querySelector('#bgm').value+'\n'+document.querySelector('textarea#t').value"
-        >
+        <label>
+            每个音符间隔(毫秒)
+            <input value="300" type="number" min="0" step="50" id="timeout" />
+        </label>
+        <br />
+        <label>
+            URL
+            <input
+                type="url"
+                id="bgm"
+                placeholder="url"
+                value="https://music.163.com/song/media/outer/url?id=114514.mp3"
+            />
+        </label>
+        <button onclick="曲谱.value='!bgm:'+document.querySelector('#bgm').value+'\n'+曲谱.value">
             添加背景阴乐
         </button>
         <br />
-        <input type="text" id="comment" />
-        <button
-            onclick="document.querySelector('textarea#t').value+=' //'+document.querySelector('#comment').value+'\n'"
-        >
-            添加注释
-        </button>
+        <label>
+            注释
+            <input type="text" id="comment" />
+        </label>
+        <button onclick="曲谱.value+=' // ' + comment.value + '\n '">添加注释</button>
         <br />
-        <button>
-            请疯狂点击此按钮, 以保持交互状态, 让浏览器两刻半也不敢放松
-        </button>
+        <button>如果浏览器偷懒，请疯狂点击此按钮, 以保持交互状态, 让浏览器两刻半也不敢放松</button>
         <hr />
         <div>
             <span>示例曲谱</span><br />
-            <button data-name="赐我">赐我</button>
-            <button data-name="鹿 be free">鹿 be free</button>
+            <button data-name="两只老虎">两只老虎</button>
+            <button data-name="小星星">小星星</button>
             <button data-name="玛丽的小羊羔">玛丽的小羊羔</button>
+            <button data-name="让风告诉你">让风告诉你</button>
         </div>
         <br />
-        <span
-            >Made with ♥ by
-            <a href="https://github.com/dsy4567">dsy4567</a></span
-        >
+        <span>Made with ♥ by <a href="https://github.com/dsy4567">dsy4567</a></span>
         <script>
             var audio = {};
-            document
-                .querySelectorAll(
-                    "button[id^='d'], button[id^='z'], button[id^='g']"
-                )
-                .forEach(async el => {
-                    audio[el.id] = URL.createObjectURL(
-                        await (await fetch(`audio/${el.id}.mp3`)).blob()
-                    );
-                    el.onmousedown = () => {
-                        new Audio(audio[el.id]).play();
-                    };
-                    el.onclick = () => {
-                        if (document.querySelector("input#c").checked) {
-                            document.querySelector("textarea#t").value +=
-                                " " + el.id;
-                        }
-                    };
-                });
-            document.querySelector(".play").onclick = () => {
+            document.querySelectorAll("button[data-note]").forEach(async el => {
+                audio[el.dataset.note] = URL.createObjectURL(
+                    await (await fetch(`audio/${el.dataset.note}.mp3`)).blob()
+                );
+                el.onmousedown = () => {
+                    new Audio(audio[el.dataset.note]).play();
+                };
+                el.onclick = () => {
+                    if (编谱模式.checked) {
+                        曲谱.value += " " + el.dataset.note;
+                    }
+                };
+            });
+            演奏.onclick = () => {
                 var n = 0,
-                    bgmurl = "",
-                    p = document.querySelector("textarea#t").value;
+                    bgmUrl = "",
+                    p = 曲谱.value;
                 if (p.startsWith("!bgm:")) {
                     let m = p.match(/\!bgm\:.+\n/);
-                    bgmurl = m[0].replace("!bgm:", "").replace("\n", "");
+                    bgmUrl = m[0].replace("!bgm:", "").replace("\n", "");
                     p = p.replace(m[0], "");
                 }
-                if (bgmurl) {
-                    let bgm = new Audio(bgmurl);
-                    bgmurl = "";
-                    bgm.oncanplay = () => {
+                if (bgmUrl) {
+                    let bgm = new Audio(bgmUrl);
+                    bgm.preload = "auto";
+                    bgmUrl = "";
+                    bgm.onloadedmetadata = () => {
                         bgm.play();
-                        setTimeout(() => {
-                            p.replace(/(\n|\/\/.+\n)/g, "")
-                                .split(" ")
-                                .forEach(s => {
-                                    setTimeout(() => {
-                                        new Audio(audio[s]).play();
-                                    }, +document.querySelector("input#timeout").value * n++);
-                                });
-                        }, +document.querySelector("input#timeout").value * n++);
+                        p.replace(/(\n| +\/\/.+\n)/g, " ")
+                            .replace(/ +/g, " ")
+                            .split(" ")
+                            .forEach(s => {
+                                let sleep = 0;
+                                if (s.startsWith("sleep:")) {
+                                    sleep = +s.replace("sleep:", "");
+                                    if (isNaN(sleep)) sleep = 1;
+                                    return (n += sleep);
+                                }
+                                setTimeout(() => {
+                                    new Audio(audio[s]).play();
+                                }, +timeout.value * n++);
+                            });
                     };
                 } else
-                    p.replace(/(\n|\/\/.+\n)/g, "")
+                    p.replace(/(\n| +\/\/.+\n)/g, " ")
+                        .replace(/ +/g, " ")
                         .split(" ")
                         .forEach(s => {
+                            let sleep = 0;
+                            if (s.startsWith("sleep:")) {
+                                sleep = +s.replace("sleep:", "");
+                                if (isNaN(sleep)) sleep = 1;
+                                return (n += sleep);
+                            }
                             setTimeout(() => {
                                 new Audio(audio[s]).play();
-                            }, +document.querySelector("input#timeout").value * n++);
+                            }, +timeout.value * n++);
                         });
             };
             document.querySelectorAll("button[data-name]").forEach(el => {
                 el.onclick = () => {
                     fetch(`示例曲谱/${el.dataset.name}.txt`).then(async res => {
-                        document.querySelector("textarea#t").value =
-                            await res.text();
+                        曲谱.value = await res.text();
                     });
                 };
             });
