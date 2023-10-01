@@ -37,6 +37,9 @@
             button[data-note] {
                 width: 36px;
             }
+            input:invalid {
+                background-color: red;
+            }
         </style>
     </head>
     <body>
@@ -96,18 +99,22 @@
         <textarea
             id="曲谱"
             style="width: 100%; height: 114.514px"
-            placeholder="曲谱, 使用空格分隔, sleep:n 可以停顿演奏 n 个音符所需时长, 换行符及多个连续空格将被忽略"
+            placeholder="曲谱, 使用空格分隔, ~n 可以停顿演奏 n 个音符时长, 换行符及多个连续空格将被忽略"
         ></textarea>
         <br />
         <button id="演奏">演奏</button>
+        <button onclick="演奏.onclick(曲谱.value.substring(曲谱.selectionStart,曲谱.selectionEnd))">
+            演奏选中
+        </button>
+        <button id="停止">停止</button>
         <br />
         <button onclick="曲谱.value+=' '">空格</button>
-        <button onclick="曲谱.value+='\n sleep:' + sl.value">换行 + 停顿</button>
+        <button onclick="曲谱.value+='\n ~' + sl.value">换行 + 停顿</button>
         <button onclick="曲谱.value=曲谱.value.substring(0, 曲谱.value.lastIndexOf(' '))">
             删除
         </button>
-        <button onclick="曲谱.value+=` sleep:${sl.value}`">sleep:</button>
-        <input id="sl" placeholder="n" value="1" min="0" step="0.5" type="number" />
+        <button onclick="曲谱.value+=` ~${sl.value}`">停顿 n 个音符时长:</button>
+        <input id="sl" placeholder="n" value="1" step="0.1" type="number" />
         <label>
             <input checked type="checkbox" id="编谱模式" />
             记录音符
@@ -149,7 +156,16 @@
         <br />
         <span>Made with ♥ by <a href="https://github.com/dsy4567">dsy4567</a></span>
         <script>
-            var audio = {};
+            const /** @type {HTMLInputElement} */ 曲谱 = document.getElementById("曲谱"),
+                /** @type {HTMLInputElement} */ 编谱模式 = document.getElementById("编谱模式"),
+                /** @type {HTMLButtonElement} */ 演奏 = document.getElementById("演奏"),
+                /** @type {HTMLInputElement} */ 停止 = document.getElementById("停止"),
+                /** @type {Record<string, HTMLAudioElement>} */ audio = {};
+            let timeouts = [],
+                selectionStart = 0,
+                selectionEnd = 0,
+                selectionDirection = "forward",
+                正在演奏 = false;
             document.querySelectorAll("button[data-note]").forEach(async el => {
                 audio[el.dataset.note] = URL.createObjectURL(
                     await (await fetch(`audio/${el.dataset.note}.mp3`)).blob()
@@ -163,10 +179,46 @@
                     }
                 };
             });
-            演奏.onclick = () => {
-                var n = 0,
+            演奏.onclick = 演奏选中 => {
+                if (正在演奏) return;
+                正在演奏 = true;
+                selectionStart = 曲谱.selectionStart;
+                selectionEnd = 曲谱.selectionEnd;
+                selectionDirection = 曲谱.selectionDirection;
+                曲谱.readOnly = true;
+                曲谱.focus();
+                let index = typeof 演奏选中 === "string" ? 曲谱.selectionStart : 0,
+                    n = 0,
                     bgmUrl = "",
-                    p = 曲谱.value;
+                    /** @type {string} */ p = typeof 演奏选中 === "string" ? 演奏选中 : 曲谱.value;
+                曲谱.setSelectionRange(0, 0);
+                const f = () => {
+                    p.replace(/(\n| +\/\/.+\n)/g, " ")
+                        .replace(/ +/g, " ")
+                        .split(" ")
+                        .forEach(s => {
+                            let sleep = 0;
+                            if (s.startsWith("~")) {
+                                sleep = +s.replace("~", "");
+                                if (isNaN(sleep)) sleep = 1;
+                                return (n += sleep);
+                            }
+                            timeouts.push(
+                                setTimeout(() => {
+                                    new Audio(audio[s]).play();
+                                    const start = 曲谱.value.indexOf(s, index),
+                                        end = start + s.length;
+                                    曲谱.setSelectionRange(start, end);
+                                    index = end;
+                                }, +timeout.value * n++)
+                            );
+                        });
+                    timeouts.push(
+                        setTimeout(() => {
+                            停止.click(1);
+                        }, +timeout.value * n)
+                    );
+                };
                 if (p.startsWith("!bgm:")) {
                     let m = p.match(/\!bgm\:.+\n/);
                     bgmUrl = m[0].replace("!bgm:", "").replace("\n", "");
@@ -178,40 +230,21 @@
                     bgmUrl = "";
                     bgm.onloadedmetadata = () => {
                         bgm.play();
-                        p.replace(/(\n| +\/\/.+\n)/g, " ")
-                            .replace(/ +/g, " ")
-                            .split(" ")
-                            .forEach(s => {
-                                let sleep = 0;
-                                if (s.startsWith("sleep:")) {
-                                    sleep = +s.replace("sleep:", "");
-                                    if (isNaN(sleep)) sleep = 1;
-                                    return (n += sleep);
-                                }
-                                setTimeout(() => {
-                                    new Audio(audio[s]).play();
-                                }, +timeout.value * n++);
-                            });
+                        f();
                     };
-                } else
-                    p.replace(/(\n| +\/\/.+\n)/g, " ")
-                        .replace(/ +/g, " ")
-                        .split(" ")
-                        .forEach(s => {
-                            let sleep = 0;
-                            if (s.startsWith("sleep:")) {
-                                sleep = +s.replace("sleep:", "");
-                                if (isNaN(sleep)) sleep = 1;
-                                return (n += sleep);
-                            }
-                            setTimeout(() => {
-                                new Audio(audio[s]).play();
-                            }, +timeout.value * n++);
-                        });
+                } else f();
+            };
+            停止.onclick = ct => {
+                if (ct !== 1) for (const t of timeouts) clearTimeout(t);
+                timeouts = [];
+                正在演奏 = false;
+                曲谱.readOnly = false;
+                曲谱.focus()
+                曲谱.setSelectionRange(selectionStart, selectionEnd, selectionDirection);
             };
             document.querySelectorAll("button[data-name]").forEach(el => {
                 el.onclick = () => {
-                    fetch(`示例曲谱/${el.dataset.name}.txt`).then(async res => {
+                    fetch(`example/${el.dataset.name}.txt`).then(async res => {
                         曲谱.value = await res.text();
                     });
                 };
